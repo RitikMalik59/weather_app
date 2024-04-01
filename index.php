@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -35,15 +36,15 @@
                             <div class="col-md">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <span>Wind</span>
+                                        <span><i class="bi bi-wind"></i> Wind</span>
                                         <span id="windSpeed">34 km/m ~</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <span>Humidity</span>
+                                        <span><i class="bi bi-moisture"></i> Humidity</span>
                                         <span id="humidity">51%</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <span>Pressure</span>
+                                        <span><i class="bi bi-thermometer-high"></i> Pressure</span>
                                         <span id="pressure">29.85 in</span>
                                     </li>
                                     <!-- <li class="list-group-item d-flex justify-content-between">
@@ -63,7 +64,7 @@
                 </div>
 
 
-                <div id="chartContainer" class="pt-4" style="height: 300px; width: 100%; position: relative;"></div>
+                <div id="weeklyWeatherChart" class="pt-4" style="height: 300px; width: 100%; position: relative;"></div>
 
             </div>
         </div>
@@ -111,10 +112,11 @@
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="js/main.js?_t=<?= time() ?>"></script>
+    <script src="js/main.js"></script>
     <script>
         $(document).ready(function() {
             loadDailyWeatherCard();
+            loadWeeklyWeatherChart();
         });
     </script>
 </body>
