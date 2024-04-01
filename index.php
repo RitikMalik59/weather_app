@@ -12,13 +12,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
-<body>
+<body class="bg-secondary-subtle">
 
-    <div class="container-fluid justify-content-center bg-secondary-subtle">
+    <div class="container-fluid justify-content-center pb-4">
 
         <h1 class="display-6 text-center pt-4">Weather App</h1>
 
-        <div class="row justify-content-center mt-5 mx-2">
+        <div class="row justify-content-center mt-5 mx-1">
             <div class="col-md-7">
                 <div class="card" id="daily_weather">
 
@@ -109,6 +109,10 @@
                 </div>
             </div>
         </div> -->
+
+    </div>
+
+    <div class="container footer-space py-4">
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
