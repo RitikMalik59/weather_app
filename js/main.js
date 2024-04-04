@@ -15,7 +15,7 @@ $(document).ready(function () {
             return;
         }
 
-        const url = `https://nominatim.openstreetmap.org/search.php?q=${city}&limit=5&format=jsonv2`;
+        const url = `https://nominatim.openstreetmap.org/search.php?q=${city}&limit=10&format=jsonv2`;
         const data = $.ajax({
             url: url,
             method: 'GET',

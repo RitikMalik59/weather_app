@@ -23,13 +23,17 @@
                     <div class="row input-group g-3">
                         <div class="col-md-7 col-sm-9">
                             <input type="text" list="search_results" class="form-control" id="searchCity" placeholder="Enter Your City Name">
-                            <div class="z-2 position-absolute m-2 rounded-5 bg-dark-subtle">
+                            <!-- <div class="z-2 position-absolute m-2 rounded-5 bg-dark-subtle">
                                 <ul class="list-group bg-info-subtle" id="search_result"></ul>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-md-2 col-sm-2 ">
-                            <input type="button" class=" btn btn-primary " id="searchLocation" value="Search">
+                            <input type="button" class="form-control btn btn-primary " id="searchLocation" value="Search">
                         </div>
+
+                    </div>
+                    <div class="z-2 position-absolute m-2 rounded-5 bg-dark-subtle">
+                        <ul class="list-group bg-info-subtle" id="search_result"></ul>
                     </div>
                 </div>
 
