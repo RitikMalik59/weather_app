@@ -133,10 +133,20 @@ function loadDailyWeatherCard() {
 }
 
 function loadWeeklyWeatherChart() {
+    const defaultLocation = { lat: '19.45', lon: "72.75", name: "Mumbai", display_name: "Mumbai,Maharashtra,India" };
+    // console.log(defaultLocation);
+    // parse the json string return from localStorage.getItem into json object
+    const searchedLocation = JSON.parse(localStorage.getItem("selectedlocation")) ?? defaultLocation;
+    // convert lat & long in 2 decimal digit
+    const latitude = Number(searchedLocation.lat).toFixed(2);
+    const longitude = Number(searchedLocation.lon).toFixed(2);
+    const locationName = searchedLocation.name;
+    const locationDisplayName = searchedLocation.display_name;
+
 
     const weeklyData = $.ajax({
 
-        url: 'https://api.open-meteo.com/v1/forecast?latitude=19.45&longitude=72.79&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,precipitation_sum',
+        url: `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,precipitation_sum`,
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -170,7 +180,7 @@ function loadWeeklyWeatherChart() {
                 },
                 data: [{
                     type: "rangeSplineArea",
-                    fillOpacity: 0.1,
+                    fillOpacity: 0.3,
                     color: "#91AAB1",
                     indexLabelFormatter: formatter,
                     dataPoints: dataPoints
