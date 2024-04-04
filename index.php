@@ -31,6 +31,7 @@
                             <input type="text" list="search_results" class="form-control" id="searchCity" placeholder="Enter Your City Name">
                             <div class="z-2 position-absolute m-2 rounded-5 bg-dark-subtle">
                                 <ul class="list-group bg-info-subtle" id="search_result"></ul>
+                                
                                 <!-- <ul class="list-group overflow-y-scroll">
                                     <li class="list-group-item">An item</li>
                                     <li class="list-group-item">A second item</li>

@@ -5,14 +5,7 @@ $(document).ready(function () {
         let err = ``;
         let outPutHtml = ``;
 
-        // if (city == '') {
-        //     err = 'Please enter some location';
-
-        // }
-
-        // const country = $('#searchCountry').val();
         console.log(city);
-        // console.log(country);
         if (city == '') {
             err = 'Please enter some location';
             outPutHtml += `<li class="list-group-item list-group-item-danger">${err}</li>`;
@@ -20,9 +13,10 @@ $(document).ready(function () {
             $('#search_result').html(outPutHtml);
             return;
         }
+
         const Obj = { city: city }
-        localStorage.setItem("lastname", JSON.stringify(Obj));
-        const url = `https://nominatim.openstreetmap.org/search.php?q=${city}&format=jsonv2`;
+        // localStorage.setItem("lastname", JSON.stringify(Obj));
+        const url = `https://nominatim.openstreetmap.org/search.php?q=${city}&limit=5&format=jsonv2`;
         const data = $.ajax({
             url: url,
             method: 'GET',
@@ -31,20 +25,42 @@ $(document).ready(function () {
                 console.log(data);
                 outPutHtml = ``;
                 if (data.length > 0) {
-                    console.log('arr');
+
                     data.forEach(location => {
                         // console.log(location);
                         let lat = location.lat;
                         let long = location.lon;
                         let locationName = location.display_name;
                         // outPutHtml += `<option value="${locationName}">`
-                        outPutHtml += `<li class="list-group-item list-group-item-info">${locationName}</li>`
-                        console.log(lat, long, locationName);
-                        console.log(outPutHtml);
+                        outPutHtml += `
+                        <span class="placeId" data-selectedlocation='{"place_id":"${location.place_id}","lat":"${location.lat}","lon":"${location.lon}","name":"${location.name}","display_name":"${location.display_name}"}'>
+                            <li class="list-group-item list-group-item-info">${locationName}</li>
+                        </span>
+                        `
+                        // console.log(lat, long, locationName);
+                        // console.log(outPutHtml);
                         // loadDailyWeatherCard(lat, long, locationName);
 
                     });
+
                     $('#search_result').html(outPutHtml);
+
+                    // selecting one from searched result
+                    $('#search_result').on('click', 'span.placeId', function () {
+                        console.log(this);
+                        // const placeId = $(this).attr('id');
+                        // const lat = $(this).data('selectedlocation').lat;
+                        // const lon = $(this).data('selectedlocation').lon;
+                        // const name = $(this).data('selectedlocation').name;
+                        // const display_name = $(this).data('selectedlocation').display_name;
+                        const selectedlocation = $(this).data('selectedlocation');
+                        console.log(selectedlocation);
+                        console.log(Obj);
+
+                        localStorage.setItem("selectedlocation", JSON.stringify(selectedlocation));
+
+                    })
+
                 } else {
                     console.log('empty arr');
                     err = 'No location found';
@@ -161,7 +177,7 @@ function loadWeeklyWeatherChart() {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
 
             const { time, temperature_2m_max, temperature_2m_min } = data.daily;
 
