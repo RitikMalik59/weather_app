@@ -1,15 +1,74 @@
 $(document).ready(function () {
     // console.log('Document ready Start');
+    $('#searchLocation').click(function () {
+        const city = encodeURIComponent($('#searchCity').val());
+        let err = ``;
+        let outPutHtml = ``;
 
+        // if (city == '') {
+        //     err = 'Please enter some location';
+
+        // }
+
+        // const country = $('#searchCountry').val();
+        console.log(city);
+        // console.log(country);
+        if (city == '') {
+            err = 'Please enter some location';
+            outPutHtml += `<li class="list-group-item list-group-item-danger">${err}</li>`;
+            console.log(outPutHtml);
+            $('#search_result').html(outPutHtml);
+            return;
+        }
+        const Obj = { city: city }
+        localStorage.setItem("lastname", JSON.stringify(Obj));
+        const url = `https://nominatim.openstreetmap.org/search.php?q=${city}&format=jsonv2`;
+        const data = $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                outPutHtml = ``;
+                if (data.length > 0) {
+                    console.log('arr');
+                    data.forEach(location => {
+                        // console.log(location);
+                        let lat = location.lat;
+                        let long = location.lon;
+                        let locationName = location.display_name;
+                        // outPutHtml += `<option value="${locationName}">`
+                        outPutHtml += `<li class="list-group-item list-group-item-info">${locationName}</li>`
+                        console.log(lat, long, locationName);
+                        console.log(outPutHtml);
+                        // loadDailyWeatherCard(lat, long, locationName);
+
+                    });
+                    $('#search_result').html(outPutHtml);
+                } else {
+                    console.log('empty arr');
+                    err = 'No location found';
+                    outPutHtml += `<li class="list-group-item list-group-item-danger">${err}</li>`;
+                    $('#search_result').html(outPutHtml);
+                }
+
+
+            }
+        })
+
+        // console.log(encodeCity);
+    })
 
     // console.log('Document ready END');
 })
 
 // console.log('main Start');
-function loadDailyWeatherCard() {
-    // console.log('loadDailyWeatherCard');
-    const curl = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";
-    const url = 'https://api.open-meteo.com/v1/forecast?latitude=19.45&longitude=72.79&current=temperature_2m,relative_humidity_2m,is_day,precipitation,rain,surface_pressure,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&models=best_match';
+function loadDailyWeatherCard(lat = 19.45, long = 72.79, location = 'Mumbai') {
+    // console.log(lat, long, location);
+    // const curl = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&forecast_days=1&current=temperature_2m,relative_humidity_2m,is_day,precipitation,rain,surface_pressure,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&models=best_match`;
+
     const data = $.ajax({
         url: url,
         method: 'GET',
@@ -18,6 +77,41 @@ function loadDailyWeatherCard() {
         success: function (data) {
             // console.log(data);
             //temperature
+            const x = $('#currentLocation');
+            function getLocation() {
+                if (navigator.geolocation) {
+                    const local = navigator.geolocation.getCurrentPosition(showPosition, showError);
+                    // console.log(local);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            // getLocation();
+
+
+            function showPosition(position) {
+                x.innerHTML = "Latitude: " + position.coords.latitude +
+                    "<br>Longitude: " + position.coords.longitude;
+            }
+
+            function showError(error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        x.innerHTML = "User denied the request for Geolocation."
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        x.innerHTML = "Location information is unavailable."
+                        break;
+                    case error.TIMEOUT:
+                        x.innerHTML = "The request to get user location timed out."
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        x.innerHTML = "An unknown error occurred."
+                        break;
+                }
+            }
+
+
             const temperature = Math.round(data.current.temperature_2m);
             const temperatureUnit = data.current_units.temperature_2m;
             //time
@@ -36,6 +130,14 @@ function loadDailyWeatherCard() {
 
 
             //Changing daily_weather card elment 
+            $('#currentLocation').text(`Today Weather in ${location}`);
+            $('#currentUpdatedAt').text('Updated ' + utcTimeInWord);
+            $('#currentTemperature').text(temperature + ' ' + temperatureUnit);
+            // $('#currentTime').text(istTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'Asia/Kolkata' }));
+            $('#currentTime').text(istTime);
+            $('#windSpeed').text(windSpeed + ' ' + windSpeedUnit);
+            $('#humidity').text(relativeHumidity + ' ' + relativeHumidityUnit);
+            $('#pressure').text(surfacePressure + ' ' + surfacePressureUnit);
             $('#currentUpdatedAt').text('Updated ' + utcTimeInWord);
             $('#currentTemperature').text(temperature + ' ' + temperatureUnit);
             // $('#currentTime').text(istTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'Asia/Kolkata' }));
@@ -59,7 +161,7 @@ function loadWeeklyWeatherChart() {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            // console.log(data);
+            console.log(data);
 
             const { time, temperature_2m_max, temperature_2m_min } = data.daily;
 
@@ -172,5 +274,53 @@ function loadWeeklyWeatherChart() {
 
     })
 }
+
+function getLocationApi(callback) {
+
+    const url = 'https://nominatim.openstreetmap.org/search?city=virar&limit=1&format=json';
+
+    const data = $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+
+            let { lat, lon, name, display_name } = data[0];
+            console.log(lat, lon, name, display_name);
+
+            lat = Number(lat).toFixed(2);
+            lon = Number(lon).toFixed(2);
+            console.log(lat, lon);
+
+            // If successful, execute the callback function with the latitude and longitude
+            callback(lat, lon);
+
+        }
+    })
+}
+
+// Function to get longitude and latitude from location API
+function getLocationCoordinates(city, country, callback) {
+    // https://nominatim.openstreetmap.org/search?city=virar&country=india&limit=9&format=json
+    const url = `https://nominatim.openstreetmap.org/search?city=virar&limit=5&format=json`;
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: { location: location },
+        success: function (response) {
+            console.log(response);
+            // If successful, execute the callback function with the latitude and longitude
+            // callback(response.latitude, response.longitude);
+        },
+        error: function (xhr, status, error) {
+            console.error('Request failed: ' + status + ', ' + error);
+        }
+    });
+}
+
+// getLocationCoordinates(undefined, undefined, undefined);
+// getLocationApi();
 
 // console.log('main Start');

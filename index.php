@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Weather App</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="js/jquery-3.7.1.min.js"></script>
@@ -20,12 +20,51 @@
 
         <div class="row justify-content-center mt-5 mx-1">
             <div class="col-md-7">
+                <div class="Search pb-3">
+                    <!-- https://nominatim.openstreetmap.org/search?city=virar&limit=9&format=json
+                    https://nominatim.openstreetmap.org/
+                    https://nominatim.openstreetmap.org/search.php?city=paris&country=france&format=jsonv2 -->
+                    <h2 class="display-5">Search location</h2>
+                    <div class="row input-group g-3">
+                        <div class="col-md-7">
+                            <label for="searchCity" class="form-label">City :</label>
+                            <input type="text" list="search_results" class="form-control" id="searchCity" placeholder="Enter Your City Name">
+                            <div class="z-2 position-absolute m-2 rounded-5 bg-dark-subtle">
+                                <ul class="list-group bg-info-subtle" id="search_result"></ul>
+                                <!-- <ul class="list-group overflow-y-scroll">
+                                    <li class="list-group-item">An item</li>
+                                    <li class="list-group-item">A second item</li>
+                                    <li class="list-group-item">A third item</li>
+                                    <li class="list-group-item">A fourth item</li>
+                                    <li class="list-group-item">And a fifth one</li>
+                                </ul> -->
+                            </div>
+                            <!-- <datalist id="search_results"></datalist> -->
+                        </div>
+                        <!-- <div class="col-md-3">
+                            <label for="exampleDataList" class="form-label">Country Name :</label>
+                            <input class="form-control" list="datalistOptions" id="searchCountry" placeholder="Type to search country...">
+                            <datalist id="datalistOptions">
+                                <option value="India">
+                                <option value="China">
+                                <option value="New York">
+                                <option value="Russia">
+                                <option value="United States">
+                            </datalist>
+                        </div> -->
+                        <div class="col-md-2 ">
+                            <label for="Search" class="form-label">.</label>
+                            <input type="button" class="form-control btn btn-primary " id="searchLocation" value="Search">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card" id="daily_weather">
 
                     <div class="card-body">
                         <p class="card-title" id="currentUpdatedAt">Updated 5 minutes ago</p>
                         <div class="card-title d-flex justify-content-between">
-                            <h5 class="card-text">Today Weather in Virar, Maharashtra, India</h5>
+                            <h5 class="card-text" id="currentLocation">Today Weather in Virar, Maharashtra, India</h5>
                             <h5 class="card-text" id="currentTime">9:00 PM</h5>
                         </div>
 
@@ -119,8 +158,9 @@
     <script src="js/main.js"></script>
     <script>
         $(document).ready(function() {
-            loadDailyWeatherCard();
+            loadDailyWeatherCard(undefined, undefined, undefined);
             loadWeeklyWeatherChart();
+            // locationApi();
         });
     </script>
 </body>
